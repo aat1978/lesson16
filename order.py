@@ -11,8 +11,8 @@ class Order(db.Model):
     end_date = db.Column(db.String(100))
     address = db.Column(db.String(100))
     prise = db.Column(db.Integer)
-    customer_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__.id}"))
-    executor_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__.id}"))
+    customer_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__}.id"))
+    executor_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__}.id"))
 
     def to_dict(self):
         return {

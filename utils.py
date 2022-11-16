@@ -45,3 +45,4 @@ def init_database():
         )
         db.session.add(new_offer)
         db.session.commit()
+
