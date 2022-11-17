@@ -182,7 +182,7 @@ def orders():
                 start_date=order_data.get("start_date"),
                 end_date=order_data.get("end_date"),
                 address=order_data.get("address"),
-                prise=order_data.get("prise"),
+                price=order_data.get("price"),
                 customer_id=order_data.get("customer_id"),
                 executor_id=order_data.get("executor_id"),
             )
@@ -204,7 +204,7 @@ def order(vid: int):
         new_data.start_date = order_data["start_date"]
         new_data.end_date = order_data["end_date"]
         new_data.address = order_data["address"]
-        new_data.prise = order_data["prise"]
+        new_data.price = order_data["price"]
         new_data.customer_id = order_data["customer_id"]
         new_data.executor_id = order_data["executor_id"]
 
