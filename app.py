@@ -5,7 +5,7 @@ import json
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////:memory:'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -41,7 +41,7 @@ class Order(db.Model):
     start_date = db.Column(db.String(100))
     end_date = db.Column(db.String(100))
     address = db.Column(db.String(100))
-    prise = db.Column(db.Integer)
+    price = db.Column(db.Integer)
     customer_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__}.id"))
     executor_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__}.id"))
 
@@ -53,7 +53,7 @@ class Order(db.Model):
             "start_date": self.start_date,
             "end_date": self.end_date,
             "address": self.address,
-            "prise": self.prise,
+            "price": self.price,
             "customer_id": self.customer_id,
             "executor_id": self.executor_id,
         }
@@ -65,7 +65,7 @@ class Offer(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey(f"{Order.__tablename__}.id"))
     executor_id = db.Column(db.Integer, db.ForeignKey(f"{User.__tablename__}.id"))
 
-    def to_dist(self):
+    def to_dict(self):
         return {
             "id": self.id,
             "order_id": self.order_id,
@@ -95,8 +95,8 @@ def init_database():
             id=order_data.get("id"),
             name=order_data.get("name"),
             description=order_data.get("description"),
-            start_data=order_data.get("start_data"),
-            end_data=order_data.get("end_data"),
+            start_date=order_data.get("start_date"),
+            end_date=order_data.get("end_date"),
             address=order_data.get("address"),
             price=order_data.get("price"),
             customer_id=order_data.get("customer_id"),
@@ -142,7 +142,7 @@ def users():
 @app.route("/users/<int:vid>", methods=["GET", "PUT", "DELETE"])
 def user(vid: int):
     if request.method == "GET":
-        return json.dumps(User.query.get(vid).to_dist()), 200, {'Content-Type': 'application/json; charset==utl-8'}
+        return json.dumps(User.query.get(vid).to_dict()), 200, {'Content-Type': 'application/json; charset==utl-8'}
     if request.method == "PUT":
         user_data = json.loads(request.data)
         new_user = User.query.get(vid)
@@ -194,7 +194,7 @@ def orders():
 @app.route("/orders/<int:vid>", methods=["GET", "PUT", "DELETE"])
 def order(vid: int):
     if request.method == "GET":
-        return json.dumps(Order.query.get(vid).to_dist()), 200, {'Content-Type': 'application/json; charset==utl-8'}
+        return json.dumps(Order.query.get(vid).to_dict()), 200, {'Content-Type': 'application/json; charset==utl-8'}
     if request.method == "PUT":
         order_data = json.loads(request.data)
         new_data = Order.query.get(vid)
@@ -242,7 +242,7 @@ def offers():
 @app.route("/offers/<int:vid>", methods=["GET", "PUT", "DELETE"])
 def offer(vid: int):
     if request.method == "GET":
-        return json.dumps(Offer.query.get(vid).to_dist()), 200, {'Content-Type': 'application/json; charset==utl-8'}
+        return json.dumps(Offer.query.get(vid).to_dict()), 200, {'Content-Type': 'application/json; charset==utl-8'}
     if request.method == "PUT":
         offer_data = json.loads(request.data)
         new_data = Offer.query.get(vid)
